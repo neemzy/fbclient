@@ -1,0 +1,17 @@
+{
+  "name": "fbclient",
+  "version": "0.1.0",
+  "description": "Alternative Facebook chat (Messenger) web client",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "npm test"
+  },
+  "author": "neemzy",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "express": "^4.16.2",
+    "facebook-chat-api": "^1.4.0",
+    "socket.io": "^2.0.3"
+  }
+}

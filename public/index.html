@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>fbclient</title>
+</head>
+
+<body>
+    <div id="fbclient">COUCOU</div>
+
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io('http://localhost:3000');
+        socket.on('threads', function(data) { console.log(data) });
+    </script>
+</body>
+
+</html>
