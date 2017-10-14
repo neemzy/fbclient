@@ -5,6 +5,7 @@
 ```
 npm i
 cp credentials.json.dist credentials.json && vi $_
+npm run server
 npm start
 ```
 

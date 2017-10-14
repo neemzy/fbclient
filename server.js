@@ -1,15 +1,10 @@
 const fb = require('facebook-chat-api');
+const io = require('socket.io')();
 
-const express = require('express');
-const app = express();
-
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
-
-const getUsers = require('./src/getUsers');
-const handleError = require('./src/handleError');
-const nameThreads = require('./src/nameThreads');
-const promisify = require('./src/promisify');
+const getUsers = require('./api/getUsers');
+const handleError = require('./api/handleError');
+const nameThreads = require('./api/nameThreads');
+const promisify = require('./api/promisify');
 
 const credentials = require('./credentials');
 
@@ -25,6 +20,7 @@ fb(credentials, (err, api) => {
         .then(threads => nameThreads(api, threads))
         .then(threads => {
             io.on('connection', socket => socket.emit('threads', threads));
+
             api.listen((err, message) => {
                 getUsers(api, [message.senderID]).then(users => {
                     const user = users.pop();
@@ -32,9 +28,7 @@ fb(credentials, (err, api) => {
                     console.log({ user, message });
                 });
             });
+
+            io.listen(3001);
         });
 });
-
-// Express & Socket.IO
-app.use(express.static('public'));
-server.listen(3000);
