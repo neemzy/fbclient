@@ -1,17 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ThreadList from './threadList';
+import Conversation from './conversation';
 
 class App extends Component {
     render() {
         return (
             <div className="app">
-                <ThreadList threads={this.props.threads} />
+                <ul className="threadList">
+                    {this.props.threads.map(thread => (
+                        <li key={thread.threadID} className="thread">
+                            <span className="thread__name">{thread.name}</span>
+                            <Conversation
+                                messages={this.props.messages.filter(message => message.threadID === thread.threadID)}
+                            />
+                        </li>
+                    ))}
+                </ul>
             </div>
         );
     }
 }
 
 export default connect(
-    (state) => ({ threads: state.threads })
+    (state) => state
 )(App);

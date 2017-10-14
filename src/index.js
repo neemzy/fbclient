@@ -12,8 +12,15 @@ const socket = window.io('http://localhost:3001');
 
 socket.on('threads', threads => {
     store.dispatch({
-        type: 'SET_THREADS',
+        type: 'THREADS',
         threads
+    })
+});
+
+socket.on('message', message => {
+    store.dispatch({
+        type: 'NEW_MESSAGE',
+        message
     })
 });
 
