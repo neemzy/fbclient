@@ -14,14 +14,15 @@ socket.on('threads', threads => {
     store.dispatch({
         type: 'THREADS',
         threads
-    })
+    });
 });
 
 socket.on('message', message => {
+    console.log(message);
     store.dispatch({
         type: 'NEW_MESSAGE',
         message
-    })
+    });
 });
 
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('fbclient'));

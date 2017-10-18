@@ -14,11 +14,11 @@ function enrichThread(context, thread) {
     if (thread.name.length > 0) {
         namePromise = promisify(thread.name);
     } else {
-        const selfId = context.getCurrentUserID();
+        const selfID = context.getCurrentUserID();
 
         const ids = thread.participants.length > 1
-            ? thread.participants.filter(id => id !== selfId)
-            : [selfId];
+            ? thread.participants.filter(id => id !== selfID)
+            : [selfID];
 
         namePromise = getUsers(context, ids).then(users => {
             return users.map(user => user.name).join(', ');
@@ -26,10 +26,18 @@ function enrichThread(context, thread) {
     }
 
     const historyPromise = promisify(callback => context.getThreadHistory(thread.threadID, 16, undefined, callback))
-        .then(history => enrichMessages(context, history));
+        .then(history => enrichMessages(context, history)),
 
-    return Promise.all([historyPromise, namePromise]).then(([history, name]) => {
-        return Object.assign(thread, { history, name });
+        snippetSenderPromise = getUsers(context, [thread.snippetSender]).then(users => {
+            return users.pop().name;
+        });
+
+    return Promise.all([
+        namePromise,
+        historyPromise,
+        snippetSenderPromise
+    ]).then(([name, history, snippetSender]) => {
+        return Object.assign(thread, { name, history, snippetSender });
     });
 }
 

@@ -3,7 +3,10 @@ import { combineReducers } from 'redux';
 function threads(state = [], action) {
     switch (action.type) { // eslint-disable-line
         case 'THREADS':
-            return action.threads;
+            return action.threads.map((thread, index) => Object.assign(thread, { active: index === 0 }));
+
+        case 'SWITCH_THREAD':
+            return state.map(thread => Object.assign(thread, { active: thread.threadID === action.threadID }));
     }
 
     return state;
